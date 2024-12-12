@@ -13,8 +13,11 @@ const App = () => {
 
     const fetchCars = async (newFilters, append=false) => {
         try {
+            if(!append){
+                setPage(1);
+            }
             const params = {
-                page: append?page:1,
+                page: append ? page:1,
                 size: 10,
             };
             if (newFilters.maker) {
@@ -39,7 +42,7 @@ const App = () => {
                 }
             })
 
-            setHasMore(response.data.data.totalPages>page);
+            setHasMore(response.data.data.totalPages > params.page);
         } catch (error) {
           console.error('Error fetching cars:', error);
         }
@@ -55,7 +58,6 @@ const App = () => {
           <div className="App">
             <h1>Car Search</h1>
             <SearchBar onSearch={(filters) => {
-                // setPage(1);
                 fetchCars(filters, false);
             }} />
             <CarList cars={cars} />
